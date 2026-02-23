@@ -6,6 +6,12 @@
     <title>NIM Játék - Verhetetlen Gép</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        body {
+            user-select: none;  /* Ne lehessen kijelölni a szöveget */
+            -webkit-tap-highlight-color: transparent; /* Kattintáskori kék villanás kikapcsolása */
+            overflow: hidden; /* Ne lehessen véletlenül elgörgetni az oldalt */
+            touch-action: manipulation; /* Megakadályozza a véletlen dupla kattintásos zoomot mobilon */
+        }
         .match { transition: all 0.3s ease; cursor: pointer; }
         .match:hover { transform: translateY(-10px); filter: brightness(1.2); }
     </style>
@@ -13,7 +19,7 @@
 <body class="bg-slate-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
 
     <div class="text-center mb-8">
-        <h1 class="text-4xl font-bold mb-2 text-yellow-500">NIM Játék</h1>
+        <h1 class="text-4xl font-bold mb-2 text-yellow-500">Verhetetlen NIM Játék?</h1>
         <p id="status" class="text-xl">Te következel! Vegyél el 1, 2 vagy 3 gyufát.</p>
     </div>
 
