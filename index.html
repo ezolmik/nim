@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIM Játék - Verhetetlen Gép</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .match { transition: all 0.3s ease; cursor: pointer; }
+        .match:hover { transform: translateY(-10px); filter: brightness(1.2); }
+    </style>
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold mb-2 text-yellow-500">NIM Játék</h1>
+        <p id="status" class="text-xl">Te következel! Vegyél el 1, 2 vagy 3 gyufát.</p>
+    </div>
+
+    <!-- Gyufaszálak konténere -->
+    <div id="game-board" class="flex flex-wrap justify-center gap-4 mb-12 max-w-md">
+        <!-- Itt generáljuk le a gyufákat JS-el -->
+    </div>
+
+    <div class="flex gap-4">
+        <button onclick="playerMove(1)" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-bold">1-et elvesz</button>
+        <button onclick="playerMove(2)" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-bold">2-őt elvesz</button>
+        <button onclick="playerMove(3)" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-bold">3-at elvesz</button>
+    </div>
+
+    <button onclick="resetGame()" class="mt-8 text-slate-400 hover:text-white underline">Új játék</button>
+
+    <script>
+        let matches = 15;
+        const board = document.getElementById('game-board');
+        const status = document.getElementById('status');
+
+        function render() {
+            board.innerHTML = '';
+            for (let i = 0; i < matches; i++) {
+                const match = document.createElement('div');
+                match.className = 'match w-3 h-24 bg-gradient-to-b from-red-600 via-yellow-700 to-yellow-800 rounded-full shadow-lg shadow-black';
+                board.appendChild(match);
+            }
+        }
+
+        function playerMove(n) {
+            if (n > matches) return;
+            matches -= n;
+            render();
+            
+            if (matches === 0) {
+                status.innerText = "Gratulálok, nyertél!";
+                return;
+            }
+
+            status.innerText = "A gép gondolkodik...";
+            setTimeout(aiMove, 600);
+        }
+
+        function aiMove() {
+            // Verhetetlen stratégia: (matches % 4)
+            // Ha 0, akkor a gép bajban van, így véletlenszerűen választ
+            let take = matches % 4;
+            if (take === 0) take = Math.floor(Math.random() * 3) + 1;
+            
+            matches -= take;
+            render();
+
+            if (matches === 0) {
+                status.innerText = "A gép nyert! Próbáld újra!";
+            } else {
+                status.innerText = `A gép elvett ${take} szálat. Te jössz!`;
+            }
+        }
+
+        function resetGame() {
+            matches = 15;
+            status.innerText = "Te következel! Vegyél el 1, 2 vagy 3 gyufát.";
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>
